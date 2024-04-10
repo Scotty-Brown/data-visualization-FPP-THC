@@ -1,4 +1,110 @@
+import { useState, useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 export default function MainContent() {
+  // const [data, setData] = useState({});
+  const [graphLabels, setGraphLabels] = useState([]);
+  const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
+  const [qtrlyTotalRevenue, setQtrylTotalRevenue] = useState([]);
+  const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
+
+  useEffect(() => {
+    const incomeStatement =
+      "https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey=demo";
+    const balanceSheet =
+      "https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=IBM&apikey=demo";
+
+    Promise.all([
+      fetch(incomeStatement).then((res) => res.json()),
+      fetch(balanceSheet).then((res) => res.json())
+    ])
+      .then((data) => {
+        const incomeStatementData = data[0];
+        const balanceSheetData = data[1];
+        createGraphLabels(incomeStatementData);
+        createQuarterlyNetIncomePoints(incomeStatementData);
+        createQuarterlyTotalRevenuePoints(incomeStatementData);
+        createQtySHEquityDataPoints(balanceSheetData);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const createGraphLabels = (data) => {
+    let labels = [];
+    data?.quarterlyReports?.forEach((item) => {
+      labels.push(item.fiscalDateEnding);
+    });
+    setGraphLabels(labels.reverse());
+  };
+
+  const createQuarterlyNetIncomePoints = (data) => {
+    let quarterlyNetIncome = [];
+    data?.quarterlyReports?.forEach((item) => {
+      quarterlyNetIncome.push(item.netIncome);
+    });
+    setQtrylNetIncome(quarterlyNetIncome.reverse());
+  };
+
+  const createQuarterlyTotalRevenuePoints = (data) => {
+    let quarterlyRevenue = [];
+    data?.quarterlyReports?.forEach((item) => {
+      quarterlyRevenue.push(item.totalRevenue);
+    });
+    setQtrylTotalRevenue(quarterlyRevenue.reverse());
+  };
+
+  const createQtySHEquityDataPoints = (data) => {
+    let quarterlySHEquity = [];
+    data?.quarterlyReports?.forEach((item) => {
+      quarterlySHEquity.push(item.totalShareholderEquity);
+    });
+    setQtrylSHEquity(quarterlySHEquity.reverse());
+  };
+
+  const lineChartData = {
+    labels: graphLabels,
+    datasets: [
+      {
+        label: "Quarterly Net Income",
+        data: qtrlyNetIncome,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)"
+      },
+      {
+        label: "Quarterly Total Revenue",
+        data: qtrlyTotalRevenue,
+        fill: false,
+        borderColor: "black"
+      },
+      {
+        label: "Quarterly Shareholder Equity",
+        data: qtrylSHEquity,
+        fill: false,
+        borderColor: "red"
+      }
+    ]
+  };
+
   return (
     <div className="w-7/12 flex flex-col gap-5">
       <h1 className="text-2xl text-left mt-5 ml-10">Visualization Page</h1>
@@ -25,7 +131,9 @@ export default function MainContent() {
       </div>
 
       {/* line graph */}
-      <div className="bg-slate-400 h-full text-center rounded-lg border-2 border-blue-900 ml-5 mb-2"> line graph</div>
+      <div className="h-full text-center rounded-lg border-2 border-blue-900 ml-5 mb-2">
+        <Line data={lineChartData} />
+      </div>
     </div>
   );
 }
