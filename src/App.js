@@ -1,5 +1,6 @@
 import './App.css';
 import MainContent from './components/MainContent';
+import Search from './components/Search';
 import Sidebar from './components/Sidebar';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="flex">
       <Sidebar />
       <MainContent />
+      <Search />
     </div>
   );
 }

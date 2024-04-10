@@ -25,7 +25,7 @@ export default function MainContent() {
       </div>
 
       {/* line graph */}
-      <div className="bg-slate-400 h-full text-center"> line graph</div>
+      <div className="bg-slate-400 h-full text-center rounded-lg border-2 border-blue-900 ml-5 mb-2"> line graph</div>
     </div>
   );
 }
