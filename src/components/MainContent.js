@@ -22,13 +22,14 @@ ChartJS.register(
 );
 
 export default function MainContent() {
-  // const [data, setData] = useState({});
+  const [companyInfo, setCompanyInfo] = useState({});
   const [graphLabels, setGraphLabels] = useState([]);
   const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
   const [qtrlyTotalRevenue, setQtrylTotalRevenue] = useState([]);
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
 
   useEffect(() => {
+    const generalCompanyInfo = "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo"
     const incomeStatement =
       "https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey=demo";
     const balanceSheet =
@@ -36,11 +37,14 @@ export default function MainContent() {
 
     Promise.all([
       fetch(incomeStatement).then((res) => res.json()),
-      fetch(balanceSheet).then((res) => res.json())
+      fetch(balanceSheet).then((res) => res.json()),
+      fetch(generalCompanyInfo).then((res) => res.json())
     ])
       .then((data) => {
         const incomeStatementData = data[0];
         const balanceSheetData = data[1];
+        const companyData = data[2];
+        createCompanyInfo(companyData);
         createGraphLabels(incomeStatementData);
         createQuarterlyNetIncomePoints(incomeStatementData);
         createQuarterlyTotalRevenuePoints(incomeStatementData);
@@ -48,6 +52,16 @@ export default function MainContent() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const createCompanyInfo = (data) => {
+    setCompanyInfo({
+      symbol: data.Symbol,
+      name: data.Name,
+      industry: data.Industry,
+      sector: data.Sector,
+      latestQuarter: data.LatestQuarter
+    });
+  }
 
   const createGraphLabels = (data) => {
     let labels = [];
@@ -113,20 +127,20 @@ export default function MainContent() {
       <div className="flex w-full justify-around items-center text-left">
         <div className="w-10 h-10 bg-blue-900"></div>
         <div>
-          <h2 className="font-extrabold">AMZN</h2>
-          <p className="text-gray-custom">Amazon.com Inc.</p>
+          <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
+          <p className="text-gray-custom">{companyInfo?.name}</p>
         </div>
         <div>
           <h3 className="text-gray-custom">Industry</h3>
-          <p className="font-bold">Internet Retail</p>
+          <p className="font-bold">{companyInfo?.industry}</p>
         </div>
         <div>
           <h3 className="text-gray-custom">Sector</h3>
-          <p className="font-bold">Consumer Cyclical</p>
+          <p className="font-bold">{companyInfo?.sector}</p>
         </div>
         <div>
           <h3 className="text-gray-custom">Latest Quarter</h3>
-          <p className="font-bold">2023-12-31</p>
+          <p className="font-bold">{companyInfo?.latestQuarter}</p>
         </div>
       </div>
 
