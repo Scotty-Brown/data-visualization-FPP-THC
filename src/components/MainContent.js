@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
+import { callback } from "chart.js/helpers";
 
 ChartJS.register(
   CategoryScale,
@@ -29,7 +30,8 @@ export default function MainContent() {
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
 
   useEffect(() => {
-    const generalCompanyInfo = "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo"
+    const generalCompanyInfo =
+      "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo";
     const incomeStatement =
       "https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey=demo";
     const balanceSheet =
@@ -61,12 +63,13 @@ export default function MainContent() {
       sector: data.Sector,
       latestQuarter: data.LatestQuarter
     });
-  }
+  };
 
   const createGraphLabels = (data) => {
     let labels = [];
     data?.quarterlyReports?.forEach((item) => {
-      labels.push(item.fiscalDateEnding);
+      let year = item.fiscalDateEnding.split("-")[0];
+      labels.push(year);
     });
     setGraphLabels(labels.reverse());
   };
@@ -99,24 +102,99 @@ export default function MainContent() {
     labels: graphLabels,
     datasets: [
       {
-        label: "Quarterly Net Income",
-        data: qtrlyNetIncome,
-        fill: false,
-        borderColor: "rgb(75, 192, 192)"
-      },
-      {
-        label: "Quarterly Total Revenue",
+        label: "Total Revenue",
         data: qtrlyTotalRevenue,
         fill: false,
-        borderColor: "black"
+        borderColor: "rgb(46, 139, 87)"
       },
       {
-        label: "Quarterly Shareholder Equity",
+        label: "Net Income",
+        data: qtrlyNetIncome,
+        fill: false,
+        borderColor: "rgb(154, 205, 50)"
+      },
+      {
+        label: "Shareholder Equity",
         data: qtrylSHEquity,
         fill: false,
-        borderColor: "red"
+        borderColor: "rgb(230, 126, 34)"
       }
     ]
+  };
+
+  const lineChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: 35
+    },
+    axis: "y",
+    mode: "nearest",
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Year",
+          font: {
+            size: 20,
+            weight: "bold"
+          }
+        },
+        ticks: {
+          maxTicksLimit: 15,
+          padding: 10,
+          font: {
+            size: 15,
+          }
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: "USD $",
+          font: {
+            size: 20,
+            weight: "bold"
+          }
+        },
+        ticks: {
+          padding: 2,
+          callback: function (value) {
+            let num = value / 1000000000;
+            return num + "B";
+          },
+          font: {
+            size: 15
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        align: "center",
+        onHover: (e) => {
+          e.native.target.style.cursor = "pointer";
+        },
+        onLeave: (e) => {
+          e.native.target.style.cursor = "default";
+        },
+        title: {
+          display: true,
+          text: "Quarterly Financials",
+          font: {
+            size: 20,
+            weight: "bold"
+          }
+        },
+        labels: {
+          font: {
+            size: 15
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -146,7 +224,7 @@ export default function MainContent() {
 
       {/* line graph */}
       <div className="h-full text-center rounded-lg border-2 border-blue-900 ml-5 mb-2">
-        <Line data={lineChartData} />
+        <Line options={lineChartOptions} data={lineChartData} />
       </div>
     </div>
   );
