@@ -10,7 +10,6 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import { callback } from "chart.js/helpers";
 
 ChartJS.register(
   CategoryScale,
@@ -198,8 +197,8 @@ export default function MainContent() {
   };
 
   return (
-    <div className="w-7/12 flex flex-col gap-5">
-      <h1 className="text-2xl text-left mt-5 ml-10">Visualization Page</h1>
+    <div className="w-7/12 h-screen flex flex-col gap-5">
+      <h1 className="text-2xl text-left pt-4 ml-10">Visualization Page</h1>
 
       {/* general info section */}
       <div className="flex w-full justify-around items-center text-left">
@@ -223,7 +222,7 @@ export default function MainContent() {
       </div>
 
       {/* line graph */}
-      <div className="h-full text-center rounded-lg border-2 border-blue-900 ml-5 mb-2">
+      <div className="h-5/6 text-center rounded-lg border-2 border-blue-900 ml-5">
         <Line options={lineChartOptions} data={lineChartData} />
       </div>
     </div>
