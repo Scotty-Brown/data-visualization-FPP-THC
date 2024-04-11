@@ -11,6 +11,12 @@ import {
   Legend
 } from "chart.js";
 
+
+// MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
+// import SAICbs from "../mockData/SAIC-bs.json";
+// import SAICgi from "../mockData/SAIC-gi.json";
+// import SAICis from "../mockData/SAIC-id.json";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -20,6 +26,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 
 export default function MainContent() {
   const [companyInfo, setCompanyInfo] = useState({});
@@ -52,6 +59,16 @@ export default function MainContent() {
         createQtySHEquityDataPoints(balanceSheetData);
       })
       .catch((error) => console.log(error));
+
+
+// MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
+    // createCompanyInfo(SAICgi);
+    // createGraphLabels(SAICis);
+    // createQuarterlyNetIncomePoints(SAICis);
+    // createQuarterlyTotalRevenuePoints(SAICis);
+    // createQtySHEquityDataPoints(SAICbs);
+
+
   }, []);
 
   const createCompanyInfo = (data) => {
@@ -143,7 +160,7 @@ export default function MainContent() {
           maxTicksLimit: 15,
           padding: 10,
           font: {
-            size: 15,
+            size: 15
           }
         }
       },
@@ -197,19 +214,19 @@ export default function MainContent() {
   };
 
   return (
-    <div className="w-7/12 h-screen flex flex-col gap-5">
+    <div className="w-7/12 h-screen flex flex-col gap-5 pb-5">
       <h1 className="text-2xl text-left pt-4 ml-10">Visualization Page</h1>
 
       {/* general info section */}
-      <div className="flex w-full justify-around items-center text-left">
+      <div className="flex w-full justify-around items-start text-left">
         <div className="w-10 h-10 bg-blue-900"></div>
         <div>
           <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
-          <p className="text-gray-custom">{companyInfo?.name}</p>
+          <p className="text-gray-custom max-w-56">{companyInfo?.name}</p>
         </div>
         <div>
-          <h3 className="text-gray-custom">Industry</h3>
-          <p className="font-bold">{companyInfo?.industry}</p>
+          <h3 className="text-gray-custom ">Industry</h3>
+          <p className="font-bold max-w-56">{companyInfo?.industry}</p>
         </div>
         <div>
           <h3 className="text-gray-custom">Sector</h3>
@@ -222,7 +239,7 @@ export default function MainContent() {
       </div>
 
       {/* line graph */}
-      <div className="h-5/6 text-center rounded-lg border-2 border-blue-900 ml-5">
+      <div className="h-5/6 contain-size text-center rounded-lg border-2 border-blue-900 ml-5 shadow-2xl">
         <Line options={lineChartOptions} data={lineChartData} />
       </div>
     </div>
