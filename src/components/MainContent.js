@@ -11,11 +11,10 @@ import {
   Legend
 } from "chart.js";
 
-
 // MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
-// import SAICbs from "../mockData/SAIC-bs.json";
-// import SAICgi from "../mockData/SAIC-gi.json";
-// import SAICis from "../mockData/SAIC-id.json";
+import SAICbs from "../mockData/SAIC-bs.json";
+import SAICgi from "../mockData/SAIC-gi.json";
+import SAICis from "../mockData/SAIC-id.json";
 
 ChartJS.register(
   CategoryScale,
@@ -27,8 +26,7 @@ ChartJS.register(
   Legend
 );
 
-
-export default function MainContent() {
+export default function MainContent({ searchResults }) {
   const [companyInfo, setCompanyInfo] = useState({});
   const [graphLabels, setGraphLabels] = useState([]);
   const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
@@ -36,40 +34,35 @@ export default function MainContent() {
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
 
   useEffect(() => {
-    const generalCompanyInfo =
-      "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo";
-    const incomeStatement =
-      "https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey=demo";
-    const balanceSheet =
-      "https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=IBM&apikey=demo";
+    if (searchResults === "SAIC") {
+      createCompanyInfo(SAICgi);
+      createGraphLabels(SAICis);
+      createQuarterlyNetIncomePoints(SAICis);
+      createQuarterlyTotalRevenuePoints(SAICis);
+      createQtySHEquityDataPoints(SAICbs);
+    } else {
+      const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=demo`;
+      const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=demo`;
+      const balanceSheet = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${searchResults}&apikey=demo`;
 
-    Promise.all([
-      fetch(incomeStatement).then((res) => res.json()),
-      fetch(balanceSheet).then((res) => res.json()),
-      fetch(generalCompanyInfo).then((res) => res.json())
-    ])
-      .then((data) => {
-        const incomeStatementData = data[0];
-        const balanceSheetData = data[1];
-        const companyData = data[2];
-        createCompanyInfo(companyData);
-        createGraphLabels(incomeStatementData);
-        createQuarterlyNetIncomePoints(incomeStatementData);
-        createQuarterlyTotalRevenuePoints(incomeStatementData);
-        createQtySHEquityDataPoints(balanceSheetData);
-      })
-      .catch((error) => console.log(error));
-
-
-// MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
-    // createCompanyInfo(SAICgi);
-    // createGraphLabels(SAICis);
-    // createQuarterlyNetIncomePoints(SAICis);
-    // createQuarterlyTotalRevenuePoints(SAICis);
-    // createQtySHEquityDataPoints(SAICbs);
-
-
-  }, []);
+      Promise.all([
+        fetch(incomeStatement).then((res) => res.json()),
+        fetch(balanceSheet).then((res) => res.json()),
+        fetch(generalCompanyInfo).then((res) => res.json())
+      ])
+        .then((data) => {
+          const incomeStatementData = data[0];
+          const balanceSheetData = data[1];
+          const companyData = data[2];
+          createCompanyInfo(companyData);
+          createGraphLabels(incomeStatementData);
+          createQuarterlyNetIncomePoints(incomeStatementData);
+          createQuarterlyTotalRevenuePoints(incomeStatementData);
+          createQtySHEquityDataPoints(balanceSheetData);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [searchResults]);
 
   const createCompanyInfo = (data) => {
     setCompanyInfo({
@@ -218,15 +211,19 @@ export default function MainContent() {
       <h1 className="text-2xl text-left pt-4 ml-10">Visualization Page</h1>
 
       {/* general info section */}
-      <div className="flex w-full justify-around items-start text-left">
+      <div className="flex w-full max-h-20 justify-around items-start text-left">
         <div className="w-10 h-10 bg-blue-900"></div>
         <div>
           <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
-          <p className="text-gray-custom max-w-56">{companyInfo?.name}</p>
+          <p className="text-gray-custom max-w-56 max-h-20 overflow-hidden text-ellipsis">
+            {companyInfo?.name}
+          </p>
         </div>
         <div>
           <h3 className="text-gray-custom ">Industry</h3>
-          <p className="font-bold max-w-56">{companyInfo?.industry}</p>
+          <p className="font-bold max-w-56 text-ellipsis">
+            {companyInfo?.industry}
+          </p>
         </div>
         <div>
           <h3 className="text-gray-custom">Sector</h3>
