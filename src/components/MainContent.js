@@ -61,8 +61,6 @@ export default function MainContent({ searchResults }) {
           createQtySHEquityDataPoints(balanceSheetData);
         })
         .catch((error) => console.log(error));
-
-      // MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
     }
   }, [searchResults]);
 

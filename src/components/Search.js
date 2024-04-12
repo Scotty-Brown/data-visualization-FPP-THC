@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import searchSuggestions fr om "../mockData/SAIC-search.json";
 
 export default function Search({ setSearchResults }) {
   const [userSearchInput, setUserSearchInput] = useState("");
