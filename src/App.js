@@ -5,7 +5,7 @@ import Search from './components/Search';
 import Sidebar from './components/Sidebar';
 
 function App() {
-const [searchResults, setSearchResults] = useState("");
+const [searchResults, setSearchResults] = useState("IBM");
 
   return (
     <div className="flex">
