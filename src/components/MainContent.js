@@ -42,6 +42,7 @@ export default function MainContent({ searchResults }) {
       createQuarterlyNetIncomePoints(SAICis);
       createQuarterlyTotalRevenuePoints(SAICis);
       createQtySHEquityDataPoints(SAICbs);
+      setIsLoading(false);
     } else {
       const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=demo`;
       const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=demo`;
