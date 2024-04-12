@@ -114,7 +114,7 @@ export default function MainContent({ searchResults }) {
         label: "Total Revenue",
         data: qtrlyTotalRevenue,
         fill: false,
-        borderColor: "rgb(46, 139, 87)",
+        borderColor: "rgb(46, 139, 87)"
       },
       {
         label: "Net Income",
@@ -191,7 +191,7 @@ export default function MainContent({ searchResults }) {
         },
         title: {
           display: true,
-          text: "Quarterly Financials",
+          text: searchResults + " - Quarterly Financials",
           font: {
             size: 20,
             weight: "bold"
@@ -216,22 +216,26 @@ export default function MainContent({ searchResults }) {
         <div>
           <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
           <p className="text-gray-custom max-w-56 max-h-20 overflow-hidden text-ellipsis">
-            {companyInfo?.name}
+            {companyInfo.name ? companyInfo?.name : "N/A"}
           </p>
         </div>
         <div>
           <h3 className="text-gray-custom ">Industry</h3>
           <p className="font-bold max-w-56 text-ellipsis">
-            {companyInfo?.industry}
+            {companyInfo.industry ? companyInfo?.industry : "N/A"}
           </p>
         </div>
         <div>
           <h3 className="text-gray-custom">Sector</h3>
-          <p className="font-bold">{companyInfo?.sector}</p>
+          <p className="font-bold">
+            {companyInfo.sector ? companyInfo?.sector : "N/A"}
+          </p>
         </div>
         <div>
           <h3 className="text-gray-custom">Latest Quarter</h3>
-          <p className="font-bold">{companyInfo?.latestQuarter}</p>
+          <p className="font-bold">
+            {companyInfo.latestQuarter ? companyInfo?.latestQuarter : "N/A"}
+          </p>
         </div>
       </div>
 
