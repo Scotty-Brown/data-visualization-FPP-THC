@@ -114,7 +114,7 @@ export default function MainContent({ searchResults }) {
         label: "Total Revenue",
         data: qtrlyTotalRevenue,
         fill: false,
-        borderColor: "rgb(46, 139, 87)"
+        borderColor: "rgb(46, 139, 87)",
       },
       {
         label: "Net Income",

@@ -39,7 +39,7 @@ export default function Search({ setSearchResults }) {
         Leave Feedback
       </button>
       <div className="mt-20 w-4/5 h-auto border-2 border-blue-900 rounded-lg pb-5">
-        <h2 className="bg-blue-900 text-gray-custom text-2xl text-center pb-3 pt-2">
+        <h2 className="bg-blue-900 text-white text-2xl text-center pb-3 pt-2">
           Search Ticker
         </h2>
         <div className="flex flex-col items-center gap-2 mt-2">
@@ -57,7 +57,7 @@ export default function Search({ setSearchResults }) {
         </div>
         <div className="flex flex-col items-center">
           <ul className="flex flex-col items-center text-center gap-4 mt-5 w-full">
-            {createSearchResults()}
+            { searchSuggestions ? createSearchResults() : <p>No results found</p>}
           </ul>
         </div>
       </div>
