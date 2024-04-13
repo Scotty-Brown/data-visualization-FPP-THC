@@ -219,32 +219,44 @@ export default function MainContent({ searchResults }) {
 
   return (
     <div className="w-7/12 h-screen flex flex-col gap-5 pb-5">
-      <h1 className="text-2xl text-left pt-4 ml-10">Visualization Page</h1>
+      <h2 id="visualization-page" className="text-2xl text-left pt-4 ml-10">
+        Visualization Page
+      </h2>
 
       {/* general info section */}
       <div className="flex w-full max-h-20 justify-around items-start text-left">
         <div className="w-10 h-10 bg-blue-900"></div>
         <div>
-          <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
-          <p className="text-gray-custom max-w-56 max-h-20 overflow-hidden text-ellipsis">
+          <h2 id="company-symbol" className="font-extrabold">
+            {companyInfo?.symbol}
+          </h2>
+          <p
+            id="company-name"
+            className="text-gray-custom max-w-56 max-h-20 overflow-hidden text-ellipsis">
             {companyInfo.name ? companyInfo?.name : "N/A"}
           </p>
         </div>
         <div>
-          <h3 className="text-gray-custom ">Industry</h3>
-          <p className="font-bold max-w-56 text-ellipsis">
+          <h3 id="industry-title" className="text-gray-custom ">
+            Industry
+          </h3>
+          <p id="industry-body" className="font-bold max-w-56 text-ellipsis">
             {companyInfo.industry ? companyInfo?.industry : "N/A"}
           </p>
         </div>
         <div>
-          <h3 className="text-gray-custom">Sector</h3>
-          <p className="font-bold">
+          <h3 id="sector-title" className="text-gray-custom">
+            Sector
+          </h3>
+          <p id="sector-body" className="font-bold">
             {companyInfo.sector ? companyInfo?.sector : "N/A"}
           </p>
         </div>
         <div>
-          <h3 className="text-gray-custom">Latest Quarter</h3>
-          <p className="font-bold">
+          <h3 id="latest-q-title" className="text-gray-custom">
+            Latest Quarter
+          </h3>
+          <p id="latest-q-body" className="font-bold">
             {companyInfo.latestQuarter ? companyInfo?.latestQuarter : "N/A"}
           </p>
         </div>
@@ -259,11 +271,12 @@ export default function MainContent({ searchResults }) {
             <Line options={lineChartOptions} data={lineChartData} />
           ) : (
             <div>
-              <p className="text-center mt-60">
+              <p id="oops-message" className="text-center mt-60">
                 Oops, something went wrong, please refresh the page and try
                 again.
               </p>
               <button
+                id="refresh-button"
                 className="w-20 bg-white rounded-lg border border-blue-900 hover:bg-blue-100 hover:scale-105 mt-5"
                 onClick={refreshBrowser}>
                 Refresh
