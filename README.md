@@ -22,5 +22,6 @@ This application is a powerful data visualization tool designed to streamline fi
   
   | Description | Screenshot |
   |------------ | -----------|
-  | <h3 align="center">Overview | <img width="720" alt="" src=">
+  | <h3 align="center">Overview | <img width="850" alt="giphy" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmczZXAyMTI0ZmJ3OGxraGI2eHNvb2I3Z243cXU5Zm0wNnE3MjduciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vEnhH32qufmum0redE/giphy.gif">
+
 
