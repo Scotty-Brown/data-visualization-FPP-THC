@@ -11,11 +11,6 @@ import {
   Legend
 } from "chart.js";
 
-// MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
-import SAICbs from "../mockData/SAIC-bs.json";
-import SAICgi from "../mockData/SAIC-gi.json";
-import SAICis from "../mockData/SAIC-is.json";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,23 +25,24 @@ export default function MainContent({ searchResults }) {
   const [isLoading, setIsLoading] = useState(true);
   const [companyInfo, setCompanyInfo] = useState({});
   const [graphLabels, setGraphLabels] = useState([]);
+  const [dataPointLabels, setDataPointLabels] = useState([]);
   const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
   const [qtrlyTotalRevenue, setQtrylTotalRevenue] = useState([]);
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
-    if (searchResults === "SAIC") {
-      createCompanyInfo(SAICgi);
-      createGraphLabels(SAICis);
-      createQuarterlyNetIncomePoints(SAICis);
-      createQuarterlyTotalRevenuePoints(SAICis);
-      createQtySHEquityDataPoints(SAICbs);
-      setIsLoading(false);
+
+    let apiKey
+
+    if (searchResults === "IBM") {
+      apiKey = "demo";
     } else {
-      const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=demo`;
-      const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=demo`;
-      const balanceSheet = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${searchResults}&apikey=demo`;
+      apiKey = "HXOOB7ZEO92NHPVD"
+    }
+      const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=${apiKey}`;
+      const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=${apiKey}`;
+      const balanceSheet = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${searchResults}&apikey=${apiKey}`;
 
       Promise.all([
         fetch(incomeStatement).then((res) => res.json()),
@@ -59,6 +55,7 @@ export default function MainContent({ searchResults }) {
           const companyData = data[2];
           createCompanyInfo(companyData);
           createGraphLabels(incomeStatementData);
+          createDataPointLabelTitle(incomeStatementData);
           createQuarterlyNetIncomePoints(incomeStatementData);
           createQuarterlyTotalRevenuePoints(incomeStatementData);
           createQtySHEquityDataPoints(balanceSheetData);
@@ -68,7 +65,6 @@ export default function MainContent({ searchResults }) {
           console.log(error);
           setIsLoading(false);
         });
-    }
   }, [searchResults]);
 
   const createCompanyInfo = (data) => {
@@ -88,6 +84,14 @@ export default function MainContent({ searchResults }) {
       labels.push(year);
     });
     setGraphLabels(labels.reverse());
+  };
+
+  const createDataPointLabelTitle = (data) => {
+    let labels = [];
+    data?.quarterlyReports?.forEach((item) => {
+      labels.push(item.fiscalDateEnding);
+    });
+    setDataPointLabels(labels.reverse());
   };
 
   const createQuarterlyNetIncomePoints = (data) => {
@@ -211,6 +215,13 @@ export default function MainContent({ searchResults }) {
         labels: {
           font: {
             size: 15
+          }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          title: function (tooltipItem) {
+            return dataPointLabels[tooltipItem[0].dataIndex];
           }
         }
       }
