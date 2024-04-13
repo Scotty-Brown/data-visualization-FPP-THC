@@ -37,17 +37,17 @@ export default function MainContent({ searchResults }) {
 
   useEffect(() => {
     setIsLoading(true);
-    if (searchResults === "SAIC") {
-      createCompanyInfo(SAICgi);
-      createGraphLabels(SAICis);
-      createQuarterlyNetIncomePoints(SAICis);
-      createQuarterlyTotalRevenuePoints(SAICis);
-      createQtySHEquityDataPoints(SAICbs);
-      setIsLoading(false);
+
+    let apiKey
+
+    if (searchResults === "IBM") {
+      apiKey = "demo";
     } else {
-      const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=demo`;
-      const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=demo`;
-      const balanceSheet = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${searchResults}&apikey=demo`;
+      apiKey = "HXOOB7ZEO92NHPVD"
+    }
+      const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=${apiKey}`;
+      const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=${apiKey}`;
+      const balanceSheet = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${searchResults}&apikey=${apiKey}`;
 
       Promise.all([
         fetch(incomeStatement).then((res) => res.json()),
@@ -70,7 +70,6 @@ export default function MainContent({ searchResults }) {
           console.log(error);
           setIsLoading(false);
         });
-    }
   }, [searchResults]);
 
   const createCompanyInfo = (data) => {

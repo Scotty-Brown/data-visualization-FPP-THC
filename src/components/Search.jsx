@@ -5,7 +5,16 @@ export default function Search({ setSearchResults }) {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
 
   const handleSearch = (userInput) => {
-    const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${userInput}&apikey=demo`;
+
+    let apiKey
+
+    if (userInput === "SAIC") {
+      apiKey = "demo";
+    } else {
+      apiKey = "HXOOB7ZEO92NHPVD"
+    }
+
+    const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${userInput}&apikey=${apiKey}`;
 
     fetch(url)
       .then((res) => res.json())
