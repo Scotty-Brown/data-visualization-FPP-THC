@@ -14,7 +14,7 @@ import {
 // MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
 import SAICbs from "../mockData/SAIC-bs.json";
 import SAICgi from "../mockData/SAIC-gi.json";
-import SAICis from "../mockData/SAIC-id.json";
+import SAICis from "../mockData/SAIC-is.json";
 
 ChartJS.register(
   CategoryScale,
