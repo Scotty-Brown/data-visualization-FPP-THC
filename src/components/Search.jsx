@@ -35,7 +35,7 @@ export default function Search({ setSearchResults }) {
 
   return (
     <div className="w-1/4 h-screen flex flex-col items-center pb-5">
-      <button className=" w-1/2 rounded-lg h-10 mt-3 border-2 border-blue-900 hover:bg-blue-100 hover:scale-105 mb-6">
+      <button id="feedback-button" className=" w-1/2 rounded-lg h-10 mt-3 border-2 border-blue-900 hover:bg-blue-100 hover:scale-105 mb-6">
         Leave Feedback
       </button>
       <div className="mt-20 w-4/5 h-auto border-2 border-blue-900 rounded-lg pb-5">
@@ -53,17 +53,18 @@ export default function Search({ setSearchResults }) {
             onChange={(e) => setUserSearchInput(e.target.value.toUpperCase())}
             className="w-3/4 h-10 border border-text-gray-custom rounded-lg hover:scale-105 text-center"></input>
           <button
+            id="search-button"
             onClick={() => handleSearch(userSearchInput)}
             className="w-20 bg-white rounded-lg border border-blue-900 hover:bg-blue-100 hover:scale-105">
             Search
           </button>
         </div>
         <div className="flex flex-col items-center">
-          <ul className="flex flex-col items-center text-center gap-4 mt-5 w-full">
+          <ul id="search-results" className="flex flex-col items-center text-center gap-4 mt-5 w-full">
             {searchSuggestions ? (
               createSearchResults()
             ) : (
-              <p>No results found</p>
+              <p id="no-results">No results found</p>
             )}
           </ul>
         </div>
