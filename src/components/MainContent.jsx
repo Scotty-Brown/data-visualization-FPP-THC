@@ -30,6 +30,7 @@ export default function MainContent({ searchResults }) {
   const [isLoading, setIsLoading] = useState(true);
   const [companyInfo, setCompanyInfo] = useState({});
   const [graphLabels, setGraphLabels] = useState([]);
+  const [dataPointLabels, setDataPointLabels] = useState([]);
   const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
   const [qtrlyTotalRevenue, setQtrylTotalRevenue] = useState([]);
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
@@ -59,6 +60,7 @@ export default function MainContent({ searchResults }) {
           const companyData = data[2];
           createCompanyInfo(companyData);
           createGraphLabels(incomeStatementData);
+          createDataPointLabelTitle(incomeStatementData);
           createQuarterlyNetIncomePoints(incomeStatementData);
           createQuarterlyTotalRevenuePoints(incomeStatementData);
           createQtySHEquityDataPoints(balanceSheetData);
@@ -88,6 +90,14 @@ export default function MainContent({ searchResults }) {
       labels.push(year);
     });
     setGraphLabels(labels.reverse());
+  };
+
+  const createDataPointLabelTitle = (data) => {
+    let labels = [];
+    data?.quarterlyReports?.forEach((item) => {
+      labels.push(item.fiscalDateEnding);
+    });
+    setDataPointLabels(labels.reverse());
   };
 
   const createQuarterlyNetIncomePoints = (data) => {
@@ -211,6 +221,18 @@ export default function MainContent({ searchResults }) {
         labels: {
           font: {
             size: 15
+          }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          title: function (tooltipItem) {
+            dataPointLabels.map((item, index) => {
+              if (tooltipItem[0].dataIndex === index) {
+                return item;
+              }
+            });
+            return dataPointLabels[tooltipItem[0].dataIndex];
           }
         }
       }
