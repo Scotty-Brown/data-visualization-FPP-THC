@@ -11,11 +11,6 @@ import {
   Legend
 } from "chart.js";
 
-// MOCK DATA USED TO CHECK STYLING FOR DIFFERENT SYMBOLS SINCE API HAS 25 REQUEST/DAY LIMIT
-import SAICbs from "../mockData/SAIC-bs.json";
-import SAICgi from "../mockData/SAIC-gi.json";
-import SAICis from "../mockData/SAIC-is.json";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -226,11 +221,6 @@ export default function MainContent({ searchResults }) {
       tooltip: {
         callbacks: {
           title: function (tooltipItem) {
-            dataPointLabels.map((item, index) => {
-              if (tooltipItem[0].dataIndex === index) {
-                return item;
-              }
-            });
             return dataPointLabels[tooltipItem[0].dataIndex];
           }
         }
