@@ -11,6 +11,14 @@
 ## 📝 Description
 This application is a powerful data visualization tool designed to streamline financial analysis for users. With a simple search function using a company's ticker symbol, users can access comprehensive quarterly financial data presented on an intuitive line graph. The graph showcases key metrics including total revenue, income, and shareholder equity, offering users a clear understanding of the company's financial performance over time. Additionally, essential company information is conveniently displayed above the graph, providing users with a comprehensive overview at a glance. This tool empowers users to make informed decisions swiftly and efficiently.
 
+### Installation Instructions:
+[//]: <> (What steps does a person have to take to get your app cloned down and running?)
+In order to view this project on your local machine, please follow the steps below:
+- Clone down the repository
+- CD into the repository
+- Run ```npm install``` to download all the library dependencies
+- View and interact with the project live by running ```npm start``` on the terminal and your web browswer will bring you to the local host address of http://localhost:3000/ 
+
 # 💻 Technologies Used
   
 ![React](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=for-the-badge)
