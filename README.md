@@ -5,8 +5,11 @@
 [Scotty Brown](https://github.com/scotty-brown)
 
   
-[Live Link]()
+[Live Link](https://data-visualization-fpp-thc.vercel.app/)
 </div>
+
+## Message from the Developer
+This tool uses the free API from [Alpha Vantage](https://www.alphavantage.co/documentation/), which only allows 25 requests per day. If you are recieving an error message on the page, please try again tomorrow!
 
 ## 📝 Description
 This application is a powerful data visualization tool designed to streamline financial analysis for users. With a simple search function using a company's ticker symbol, users can access comprehensive quarterly financial data presented on an intuitive line graph. The graph showcases key metrics including total revenue, income, and shareholder equity, offering users a clear understanding of the company's financial performance over time. Additionally, essential company information is conveniently displayed above the graph, providing users with a comprehensive overview at a glance. This tool empowers users to make informed decisions swiftly and efficiently.
