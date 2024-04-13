@@ -39,16 +39,19 @@ export default function Search({ setSearchResults }) {
         Leave Feedback
       </button>
       <div className="mt-20 w-4/5 h-auto border-2 border-blue-900 rounded-lg pb-5">
-        <h2 className="bg-blue-900 text-gray-custom text-2xl text-center pb-3 pt-2">
-          Search Ticker
-        </h2>
-        <div className="flex flex-col items-center gap-2 mt-2">
+        <div className="flex flex-col items-center gap-2">
+          <label
+            htmlFor="searchInput"
+            className="w-full h-auto bg-blue-900 text-white text-2xl text-center pb-4 pt-2">
+            Search Ticker
+          </label>
           <input
+            id="searchInput"
             type="text"
             placeholder="Search Company"
             value={userSearchInput}
             onChange={(e) => setUserSearchInput(e.target.value.toUpperCase())}
-            className="w-3/4 h-10 border border-text-gray-custom rounded-lg hover:scale-105"></input>
+            className="w-3/4 h-10 border border-text-gray-custom rounded-lg hover:scale-105 text-center"></input>
           <button
             onClick={() => handleSearch(userSearchInput)}
             className="w-20 bg-white rounded-lg border border-blue-900 hover:bg-blue-100 hover:scale-105">
@@ -57,7 +60,11 @@ export default function Search({ setSearchResults }) {
         </div>
         <div className="flex flex-col items-center">
           <ul className="flex flex-col items-center text-center gap-4 mt-5 w-full">
-            {createSearchResults()}
+            {searchSuggestions ? (
+              createSearchResults()
+            ) : (
+              <p>No results found</p>
+            )}
           </ul>
         </div>
       </div>

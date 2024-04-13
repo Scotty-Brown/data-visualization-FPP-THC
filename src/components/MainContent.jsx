@@ -27,6 +27,7 @@ ChartJS.register(
 );
 
 export default function MainContent({ searchResults }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [companyInfo, setCompanyInfo] = useState({});
   const [graphLabels, setGraphLabels] = useState([]);
   const [qtrlyNetIncome, setQtrylNetIncome] = useState([]);
@@ -34,12 +35,14 @@ export default function MainContent({ searchResults }) {
   const [qtrylSHEquity, setQtrylSHEquity] = useState([]);
 
   useEffect(() => {
+    setIsLoading(true);
     if (searchResults === "SAIC") {
       createCompanyInfo(SAICgi);
       createGraphLabels(SAICis);
       createQuarterlyNetIncomePoints(SAICis);
       createQuarterlyTotalRevenuePoints(SAICis);
       createQtySHEquityDataPoints(SAICbs);
+      setIsLoading(false);
     } else {
       const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=demo`;
       const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=demo`;
@@ -59,8 +62,12 @@ export default function MainContent({ searchResults }) {
           createQuarterlyNetIncomePoints(incomeStatementData);
           createQuarterlyTotalRevenuePoints(incomeStatementData);
           createQtySHEquityDataPoints(balanceSheetData);
+          setIsLoading(false);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
     }
   }, [searchResults]);
 
@@ -105,6 +112,10 @@ export default function MainContent({ searchResults }) {
       quarterlySHEquity.push(item.totalShareholderEquity);
     });
     setQtrylSHEquity(quarterlySHEquity.reverse());
+  };
+
+  const refreshBrowser = () => {
+    window.location.reload();
   };
 
   const lineChartData = {
@@ -191,7 +202,7 @@ export default function MainContent({ searchResults }) {
         },
         title: {
           display: true,
-          text: "Quarterly Financials",
+          text: searchResults + " - Quarterly Financials",
           font: {
             size: 20,
             weight: "bold"
@@ -216,29 +227,53 @@ export default function MainContent({ searchResults }) {
         <div>
           <h2 className="font-extrabold">{companyInfo?.symbol}</h2>
           <p className="text-gray-custom max-w-56 max-h-20 overflow-hidden text-ellipsis">
-            {companyInfo?.name}
+            {companyInfo.name ? companyInfo?.name : "N/A"}
           </p>
         </div>
         <div>
           <h3 className="text-gray-custom ">Industry</h3>
           <p className="font-bold max-w-56 text-ellipsis">
-            {companyInfo?.industry}
+            {companyInfo.industry ? companyInfo?.industry : "N/A"}
           </p>
         </div>
         <div>
           <h3 className="text-gray-custom">Sector</h3>
-          <p className="font-bold">{companyInfo?.sector}</p>
+          <p className="font-bold">
+            {companyInfo.sector ? companyInfo?.sector : "N/A"}
+          </p>
         </div>
         <div>
           <h3 className="text-gray-custom">Latest Quarter</h3>
-          <p className="font-bold">{companyInfo?.latestQuarter}</p>
+          <p className="font-bold">
+            {companyInfo.latestQuarter ? companyInfo?.latestQuarter : "N/A"}
+          </p>
         </div>
       </div>
 
       {/* line graph */}
-      <div className="h-5/6 contain-size text-center rounded-lg border-2 border-blue-900 ml-5 shadow-2xl">
-        <Line options={lineChartOptions} data={lineChartData} />
-      </div>
+      {!isLoading ? (
+        <div className="h-5/6 contain-size text-center rounded-lg border-2 border-blue-900 ml-5 shadow-2xl">
+          {qtrlyNetIncome.length > 0 ||
+          qtrlyTotalRevenue.length > 0 ||
+          qtrylSHEquity.length > 0 ? (
+            <Line options={lineChartOptions} data={lineChartData} />
+          ) : (
+            <div>
+              <p className="text-center mt-60">
+                Oops, something went wrong, please refresh the page and try
+                again.
+              </p>
+              <button
+                className="w-20 bg-white rounded-lg border border-blue-900 hover:bg-blue-100 hover:scale-105 mt-5"
+                onClick={refreshBrowser}>
+                Refresh
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p className="text-center mt-60">Loading...</p>
+      )}
     </div>
   );
 }
