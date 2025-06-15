@@ -38,7 +38,7 @@ export default function MainContent({ searchResults }) {
     if (searchResults === "IBM") {
       apiKey = "demo";
     } else {
-      apiKey = "HXOOB7ZEO92NHPVD"
+      apiKey = process.env.REACT_APP_ALPHA_VANTAGE_API_KEY
     }
       const generalCompanyInfo = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchResults}&apikey=${apiKey}`;
       const incomeStatement = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${searchResults}&apikey=${apiKey}`;
