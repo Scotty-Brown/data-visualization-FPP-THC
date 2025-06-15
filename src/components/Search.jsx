@@ -11,7 +11,7 @@ export default function Search({ setSearchResults }) {
     if (userInput === "SAIC") {
       apiKey = "demo";
     } else {
-      apiKey = "HXOOB7ZEO92NHPVD"
+      apiKey = process.env.REACT_APP_ALPHA_VANTAGE_API_KEY
     }
 
     const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${userInput}&apikey=${apiKey}`;
